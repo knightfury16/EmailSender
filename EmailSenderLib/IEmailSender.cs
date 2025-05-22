@@ -1,6 +1,6 @@
 namespace EmailSenderLib;
 
-using EmailSender.Models;
+using EmailSenderLib.Models;
 
 
 
