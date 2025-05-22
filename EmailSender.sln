@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailSenderLib", "EmailSenderLib\EmailSenderLib.csproj", "{108F2B68-2944-4F21-9F4A-D2245EEDD25F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailSenderTests", "EmailSenderTests\EmailSenderTests.csproj", "{2483C6B0-9465-4D1C-B53A-A2822775C1E1}"
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -30,5 +32,17 @@ Global
 		{108F2B68-2944-4F21-9F4A-D2245EEDD25F}.Release|x64.Build.0 = Release|Any CPU
 		{108F2B68-2944-4F21-9F4A-D2245EEDD25F}.Release|x86.ActiveCfg = Release|Any CPU
 		{108F2B68-2944-4F21-9F4A-D2245EEDD25F}.Release|x86.Build.0 = Release|Any CPU
+		{2483C6B0-9465-4D1C-B53A-A2822775C1E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2483C6B0-9465-4D1C-B53A-A2822775C1E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2483C6B0-9465-4D1C-B53A-A2822775C1E1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2483C6B0-9465-4D1C-B53A-A2822775C1E1}.Debug|x64.Build.0 = Debug|Any CPU
+		{2483C6B0-9465-4D1C-B53A-A2822775C1E1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2483C6B0-9465-4D1C-B53A-A2822775C1E1}.Debug|x86.Build.0 = Debug|Any CPU
+		{2483C6B0-9465-4D1C-B53A-A2822775C1E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2483C6B0-9465-4D1C-B53A-A2822775C1E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2483C6B0-9465-4D1C-B53A-A2822775C1E1}.Release|x64.ActiveCfg = Release|Any CPU
+		{2483C6B0-9465-4D1C-B53A-A2822775C1E1}.Release|x64.Build.0 = Release|Any CPU
+		{2483C6B0-9465-4D1C-B53A-A2822775C1E1}.Release|x86.ActiveCfg = Release|Any CPU
+		{2483C6B0-9465-4D1C-B53A-A2822775C1E1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
