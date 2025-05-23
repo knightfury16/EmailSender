@@ -16,7 +16,7 @@ public class EmailAddress : IEquatable<EmailAddress>
     private const int MaxEmailLength = 254; //RFC 5321 limit
     private const int MaxDisplayNameLength = 64; //RFC 5322 recommendation
 
-    public string Adderess { get; }
+    public string Address { get; }
 
     public string? DisplayName { get; }
 
@@ -24,10 +24,10 @@ public class EmailAddress : IEquatable<EmailAddress>
     public bool HasDisplayName => !string.IsNullOrEmpty(DisplayName);
 
     [JsonIgnore]
-    public string Domain => Adderess.Substring(Adderess.LastIndexOf('@') + 1);
+    public string Domain => Address.Substring(Address.LastIndexOf('@') + 1);
 
     [JsonIgnore]
-    public string LocalPart => Adderess.Substring(0, Adderess.LastIndexOf('@'));
+    public string LocalPart => Address.Substring(0, Address.LastIndexOf('@'));
 
     public EmailAddress(string address, string? displayName)
     {
@@ -35,7 +35,7 @@ public class EmailAddress : IEquatable<EmailAddress>
         ValidateEmail(address);
         ValidateDisplayName(displayName);
 
-        Adderess = address;
+        Address = address;
         DisplayName = string.IsNullOrWhiteSpace(displayName) ? null : displayName.Trim();
     }
 
@@ -130,12 +130,12 @@ public class EmailAddress : IEquatable<EmailAddress>
 
     public override string ToString()
     {
-        return HasDisplayName ? $"{DisplayName} <{Adderess}>" : Adderess;
+        return HasDisplayName ? $"{DisplayName} <{Address}>" : Address;
     }
 
     public string ToAddressString()
     {
-        return Adderess;
+        return Address;
     }
 
     #region Equality and Comparision
@@ -148,7 +148,7 @@ public class EmailAddress : IEquatable<EmailAddress>
         if (ReferenceEquals(this, other))
             return true;
 
-        return string.Equals(this.Adderess, other.Adderess, StringComparison.OrdinalIgnoreCase)
+        return string.Equals(this.Address, other.Address, StringComparison.OrdinalIgnoreCase)
             && string.Equals(
                 this.DisplayName,
                 other.DisplayName,
@@ -163,7 +163,7 @@ public class EmailAddress : IEquatable<EmailAddress>
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Adderess.ToLowerInvariant(), DisplayName);
+        return HashCode.Combine(Address.ToLowerInvariant(), DisplayName);
     }
 
     public static bool operator ==(EmailAddress? left, EmailAddress? right)
@@ -180,17 +180,17 @@ public class EmailAddress : IEquatable<EmailAddress>
     #region Internal Conversion (for framework use only)
     internal System.Net.Mail.MailAddress ToSystemMail()
     {
-        if (string.IsNullOrEmpty(Adderess))
+        if (string.IsNullOrEmpty(Address))
         {
             throw new ArgumentNullException(
-                nameof(Adderess),
+                nameof(Address),
                 "Email address cannot be null or empty"
             );
         }
 
         return string.IsNullOrEmpty(DisplayName)
-            ? new System.Net.Mail.MailAddress(Adderess)
-            : new System.Net.Mail.MailAddress(Adderess, DisplayName);
+            ? new System.Net.Mail.MailAddress(Address)
+            : new System.Net.Mail.MailAddress(Address, DisplayName);
     }
     #endregion
 }
