@@ -48,6 +48,7 @@ public abstract class SendRequest
 
     public EmailPriority Priority { get; set; } = EmailPriority.Normal;
     public Dictionary<string, string> Headers => _headers;
+    public int TotalRecipientsCount => _to.Count + _cc.Count + _bcc.Count;
 
     protected SendRequest() { }
 }
