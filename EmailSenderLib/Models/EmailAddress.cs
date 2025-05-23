@@ -7,7 +7,7 @@ namespace EmailSenderLib.Models;
 /// <summary>
 /// Represents an email address with an optional display name.
 /// </summary>
-public class EmailAddress
+public class EmailAddress : IEquatable<EmailAddress>
 {
     private static readonly Regex EmailValidationRegex = new(
         @"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
@@ -137,4 +137,34 @@ public class EmailAddress
     {
         return Adderess;
     }
+
+    #region Equality and Comparision
+
+    public bool Equals(EmailAddress? other)
+    {
+        if (other == null)
+            return false;
+
+        if (ReferenceEquals(this, other))
+            return true;
+
+        return string.Equals(this.Adderess, other.Adderess, StringComparison.OrdinalIgnoreCase)
+            && string.Equals(
+                this.DisplayName,
+                other.DisplayName,
+                StringComparison.OrdinalIgnoreCase
+            );
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as EmailAddress);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Adderess.ToLowerInvariant(), DisplayName);
+    }
+
+    #endregion
 }
