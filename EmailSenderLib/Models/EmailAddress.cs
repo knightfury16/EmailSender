@@ -39,6 +39,33 @@ public class EmailAddress
         DisplayName = string.IsNullOrWhiteSpace(displayName) ? null : displayName.Trim();
     }
 
+    public static bool TryCreate(
+        string? address,
+        string? displayName,
+        out EmailAddress? emailAddress
+    )
+    {
+        emailAddress = null;
+
+        try
+        {
+            if (address == null)
+                return false;
+
+            emailAddress = new EmailAddress(address, displayName);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public static bool TryCreate(string? address, out EmailAddress? emailAddress)
+    {
+        return TryCreate(address, null, out emailAddress);
+    }
+
     public EmailAddress(string address)
         : this(address, null) { }
 
