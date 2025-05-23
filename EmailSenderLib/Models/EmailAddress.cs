@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
@@ -41,9 +42,42 @@ public class EmailAddress
     public EmailAddress(string address)
         : this(address, null) { }
 
-    private static string ValidateEmail(string address)
+    private void ValidateEmail(string address)
     {
-        throw new NotImplementedException();
+        if (address == null)
+        {
+            throw new ArgumentNullException(nameof(address), "Email Address can not be null.");
+        }
+
+        address = address.Trim();
+
+        if (string.IsNullOrEmpty(address))
+        {
+            throw new ArgumentException("Email Address can not be empty");
+        }
+
+        if (address.Length > MaxEmailLength)
+        {
+            throw new ArgumentException(
+                $"Email address can not exceed {MaxEmailLength} characters.",
+                nameof(address)
+            );
+        }
+
+        if (!EmailValidationRegex.IsMatch(address))
+        {
+            throw new ArgumentException("Invalid email address format.", nameof(address));
+        }
+
+        // let the big boy validate email now
+        try
+        {
+            var _ = new MailAddress(address);
+        }
+        catch (System.FormatException ex)
+        {
+            throw new ArgumentException("Invalid email address format.", nameof(address), ex);
+        }
     }
 
     private static string? ValidateDisplayName(string? displayName)
