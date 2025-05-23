@@ -27,4 +27,27 @@ public class EmailAddress
 
     [JsonIgnore]
     public string LocalPart => Adderess.Substring(0, Adderess.LastIndexOf('@'));
+
+    public EmailAddress(string address, string? displayName)
+    {
+        // throws error if invalid
+        ValidateEmail(address);
+        ValidateDisplayName(displayName);
+
+        Adderess = address;
+        DisplayName = string.IsNullOrWhiteSpace(displayName) ? null : displayName.Trim();
+    }
+
+    public EmailAddress(string address)
+        : this(address, null) { }
+
+    private static string ValidateEmail(string address)
+    {
+        throw new NotImplementedException();
+    }
+
+    private static string? ValidateDisplayName(string? displayName)
+    {
+        throw new NotImplementedException();
+    }
 }
