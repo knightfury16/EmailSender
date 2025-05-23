@@ -176,4 +176,21 @@ public class EmailAddress : IEquatable<EmailAddress>
         return !(left == right);
     }
     #endregion
+
+    #region Internal Conversion (for framework use only)
+    internal System.Net.Mail.MailAddress ToSystemMail()
+    {
+        if (string.IsNullOrEmpty(Adderess))
+        {
+            throw new ArgumentNullException(
+                nameof(Adderess),
+                "Email address cannot be null or empty"
+            );
+        }
+
+        return string.IsNullOrEmpty(DisplayName)
+            ? new System.Net.Mail.MailAddress(Adderess)
+            : new System.Net.Mail.MailAddress(Adderess, DisplayName);
+    }
+    #endregion
 }
