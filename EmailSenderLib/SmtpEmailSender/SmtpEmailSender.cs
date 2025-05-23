@@ -6,8 +6,6 @@ using Microsoft.Extensions.Options;
 
 namespace EmailSenderLib.SmtpEmailSender;
 
-
-
 public class SmtpEmailSender : IEmailSender, IDisposable
 {
     private readonly SmtpEmailSettings _settings;
@@ -154,21 +152,21 @@ public class SmtpEmailSender : IEmailSender, IDisposable
         message.From = from;
 
         // Set the to addresses
-        var to = request.To.Select(t => t.ToSystemMailAddress()).ToList();
+        var to = request.To.Select(t => t.ToSystemMail()).ToList();
         foreach (var t in to)
         {
             message.To.Add(t);
         }
 
         // Set the cc addresses
-        var cc = request.Cc.Select(c => c.ToSystemMailAddress()).ToList();
+        var cc = request.Cc.Select(c => c.ToSystemMail()).ToList();
         foreach (var c in cc)
         {
             message.CC.Add(c);
         }
 
         // Set the bcc addresses
-        var bcc = request.Bcc.Select(b => b.ToSystemMailAddress()).ToList();
+        var bcc = request.Bcc.Select(b => b.ToSystemMail()).ToList();
         foreach (var b in bcc)
         {
             message.Bcc.Add(b);
@@ -225,7 +223,7 @@ public class SmtpEmailSender : IEmailSender, IDisposable
     {
         if (from != null)
         {
-            return from.ToSystemMailAddress();
+            return from.ToSystemMail();
         }
         return GetSenderFromSettings();
     }
