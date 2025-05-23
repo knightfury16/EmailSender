@@ -5,88 +5,49 @@ namespace EmailSenderLib.Models;
 /// </summary>
 public abstract class SendRequest
 {
-    /// <summary>
-    /// Gets or sets the sender's email address. This is nullable as it may be set from environment variables in the implementation.
-    /// </summary>
+    private const int MaxSubjectLength = 998; //RFC 5322 limit
+    private const int MaxRecipientPerType = 100;
+
+    private readonly List<EmailAddress> _to = new();
+    private readonly List<EmailAddress> _cc = new();
+    private readonly List<EmailAddress> _bcc = new();
+    private readonly List<Attachment> _attachments = new();
+    private readonly Dictionary<string, string> _headers = new();
+
     public EmailAddress? From { get; set; }
 
-    /// <summary>
-    /// Gets or sets the collection of primary recipients' email addresses.
-    /// </summary>
-    public ICollection<EmailAddress> To { get; set; } = new List<EmailAddress>();
+    public ICollection<EmailAddress> To => _to;
+    public ICollection<EmailAddress> Cc => _cc;
+    public ICollection<EmailAddress> Bcc => _bcc;
 
-    /// <summary>
-    /// Gets or sets the collection of carbon copy (CC) recipients' email addresses.
-    /// </summary>
-    public ICollection<EmailAddress> Cc { get; set; } = new List<EmailAddress>();
+    private string _subject = String.Empty;
 
-    /// <summary>
-    /// Gets or sets the collection of blind carbon copy (BCC) recipients' email addresses.
-    /// </summary>
-    public ICollection<EmailAddress> Bcc { get; set; } = new List<EmailAddress>();
-
-    /// <summary>
-    /// Gets or sets the subject line of the email.
-    /// </summary>
-    public required string Subject { get; set; }
-
-    /// <summary>
-    /// Gets or sets the collection of attachments to be included with the email.
-    /// </summary>
-    public ICollection<Attachment> Attachments { get; set; } = new List<Attachment>();
-
-    /// <summary>
-    /// Gets or sets the priority level of the email.
-    /// </summary>
-    public EmailPriority Priority { get; set; } = EmailPriority.Normal;
-
-    /// <summary>
-    /// Gets or sets the custom headers to be included with the email.
-    /// </summary>
-    public Dictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
-
-    /// <summary>
-    /// Initializes a new instance of the SendRequest class with default values.
-    /// The To, Cc, Bcc, and Attachments collections will be initialized as empty collections,
-    /// and Priority will be set to Normal.
-    /// </summary>
-    public SendRequest() { }
-
-    /// <summary>
-    /// Initializes a new instance of the SendRequest class with a collection of recipients.
-    /// </summary>
-    /// <param name="to">The collection of primary recipients.</param>
-    /// <exception cref="ArgumentNullException">Thrown when the recipients collection is null.</exception>
-    public SendRequest(ICollection<EmailAddress> to)
+    public required string Subject
     {
-        ArgumentNullException.ThrowIfNull(to);
-
-        foreach (var recipient in to)
+        get => _subject;
+        set
         {
-            To.Add(recipient);
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ArgumentException("Subject can not be null or empty.", nameof(value));
+            }
+
+            if (_subject.Length > MaxSubjectLength)
+            {
+                throw new ArgumentException(
+                    $"Subject can not exceed {MaxSubjectLength} characters.",
+                    nameof(value)
+                );
+            }
+
+            _subject = value.Trim();
         }
     }
 
-    /// <summary>
-    /// Initializes a new instance of the SendRequest class with a single recipient.
-    /// </summary>
-    /// <param name="to">The primary recipient.</param>
-    /// <exception cref="ArgumentNullException">Thrown when the recipient is null.</exception>
-    public SendRequest(EmailAddress to)
-    {
-        ArgumentNullException.ThrowIfNull(to);
-        To.Add(to);
-    }
+    public ICollection<Attachment> Attachments => _attachments;
 
-    /// <summary>
-    /// Validates the email request. This method should be overridden in derived classes to add specific validation logic.
-    /// </summary>
-    /// <exception cref="InvalidOperationException">Thrown when the validation fails.</exception>
-    public virtual void Validate()
-    {
-        if (!To.Any())
-            throw new InvalidOperationException("At least one recipient required.");
-        if (string.IsNullOrEmpty(Subject))
-            throw new InvalidOperationException("Subject is required.");
-    }
+    public EmailPriority Priority { get; set; } = EmailPriority.Normal;
+    public Dictionary<string, string> Headers => _headers;
+
+    protected SendRequest() { }
 }
