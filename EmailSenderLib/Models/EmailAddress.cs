@@ -80,8 +80,24 @@ public class EmailAddress
         }
     }
 
-    private static string? ValidateDisplayName(string? displayName)
+    private void ValidateDisplayName(string? displayName)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrEmpty(displayName))
+            return;
+
+        displayName = displayName.Trim();
+
+        if (displayName.Length > MaxDisplayNameLength)
+        {
+            throw new ArgumentException(
+                $"Display name can not excced {MaxDisplayNameLength} characters.",
+                nameof(displayName)
+            );
+        }
+
+        if (displayName.Any(char.IsControl))
+        {
+            throw new ArgumentException("Display name can not contain control characters.");
+        }
     }
 }
