@@ -100,4 +100,9 @@ public class EmailAddress
             throw new ArgumentException("Display name can not contain control characters.");
         }
     }
+
+    public override string ToString()
+    {
+        return HasDisplayName ? $"{DisplayName} <{Adderess}>" : Adderess;
+    }
 }
