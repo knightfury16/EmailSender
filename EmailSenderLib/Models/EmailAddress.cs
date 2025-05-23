@@ -39,6 +39,9 @@ public class EmailAddress
         DisplayName = string.IsNullOrWhiteSpace(displayName) ? null : displayName.Trim();
     }
 
+    public EmailAddress(string address)
+        : this(address, null) { }
+
     public static bool TryCreate(
         string? address,
         string? displayName,
@@ -65,9 +68,6 @@ public class EmailAddress
     {
         return TryCreate(address, null, out emailAddress);
     }
-
-    public EmailAddress(string address)
-        : this(address, null) { }
 
     private void ValidateEmail(string address)
     {
