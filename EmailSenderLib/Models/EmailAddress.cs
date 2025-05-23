@@ -132,4 +132,9 @@ public class EmailAddress
     {
         return HasDisplayName ? $"{DisplayName} <{Adderess}>" : Adderess;
     }
+
+    public string ToAddressString()
+    {
+        return Adderess;
+    }
 }
