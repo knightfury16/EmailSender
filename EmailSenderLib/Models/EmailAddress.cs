@@ -166,5 +166,14 @@ public class EmailAddress : IEquatable<EmailAddress>
         return HashCode.Combine(Adderess.ToLowerInvariant(), DisplayName);
     }
 
+    public static bool operator ==(EmailAddress? left, EmailAddress? right)
+    {
+        return EqualityComparer<EmailAddress>.Default.Equals(left, right);
+    }
+
+    public static bool operator !=(EmailAddress? left, EmailAddress? right)
+    {
+        return !(left == right);
+    }
     #endregion
 }
