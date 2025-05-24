@@ -126,6 +126,16 @@ public abstract class SendRequest
         _headers[name.Trim()] = value?.Trim() ?? string.Empty;
     }
 
+    public void AddHeaders(Dictionary<string, string> headers)
+    {
+        ArgumentNullException.ThrowIfNull(headers);
+
+        foreach (var item in headers)
+        {
+            AddHeader(item.Key, item.Value);
+        }
+    }
+
     public virtual void Validate()
     {
         if (TotalRecipientsCount == 0)
