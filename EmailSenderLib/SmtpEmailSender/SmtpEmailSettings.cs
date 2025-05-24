@@ -2,7 +2,7 @@ using EmailSenderLib.Models;
 
 namespace EmailSenderLib.SmtpEmailSender;
 
-public class SmtpEmailSettings : EmailSettings
+public sealed class SmtpEmailSettings : EmailSettings
 {
     public string? SmtpServer { get; set; }
     public int SmtpPort { get; set; }
