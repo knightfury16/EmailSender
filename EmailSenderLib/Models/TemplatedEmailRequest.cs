@@ -3,7 +3,7 @@ namespace EmailSenderLib.Models;
 /// <summary>
 /// Represents a request to send a templated email using a predefined template.
 /// </summary>
-public class TemplatedEmailRequest : SendRequest
+public sealed class TemplatedEmailRequest : SendRequest
 {
     private string _templateId = string.Empty;
 
