@@ -91,4 +91,19 @@ public abstract class SendRequest
             }
         }
     }
+
+    public void AddTo(params EmailAddress[] recipients)
+    {
+        AddRecipients(_to, recipients, ToType);
+    }
+
+    public void AddBcc(params EmailAddress[] recipients)
+    {
+        AddRecipients(_bcc, recipients, BccType);
+    }
+
+    public void AddCc(params EmailAddress[] recipients)
+    {
+        AddRecipients(_cc, recipients, CcType);
+    }
 }
