@@ -7,6 +7,9 @@ public abstract class SendRequest
 {
     private const int MaxSubjectLength = 998; //RFC 5322 limit
     private const int MaxRecipientPerType = 100;
+    private const string ToType = "TO";
+    private const string BccType = "BCC";
+    private const string CcType = "CC";
 
     private readonly List<EmailAddress> _to = new();
     private readonly List<EmailAddress> _cc = new();
