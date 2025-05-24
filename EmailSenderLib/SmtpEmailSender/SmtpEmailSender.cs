@@ -67,23 +67,22 @@ public class SmtpEmailSender : IEmailSender, IDisposable
         {
             var renderedTemplate = await _templateRenderer.RenderTemplateAsync(
                 request.TemplateId,
-                request.TemplateContent,
+                request.TemplateContent ?? string.Empty,
                 cancellationToken
             );
 
-            var emailRequest = new EmailSendRequest()
+            var emailRequest = new EmailSendRequest(request.To)
             {
-                To = request.To,
                 From = request.From,
-                Cc = request.Cc,
-                Bcc = request.Bcc,
                 Subject = request.Subject,
                 HtmlContent = renderedTemplate.HtmlContent,
                 TextContent = renderedTemplate.TextContent,
-                Attachments = request.Attachments,
                 Priority = request.Priority,
-                Headers = request.Headers,
             };
+
+            emailRequest.AddBcc(request.Bcc.ToArray());
+            emailRequest.AddCc(request.Cc.ToArray());
+            emailRequest.AddHeaders(request.Headers);
 
             return await SendEmailAsync(emailRequest, cancellationToken);
         }
