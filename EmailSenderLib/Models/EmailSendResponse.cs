@@ -8,46 +8,46 @@ public class EmailSendResponse
     /// <summary>
     /// Gets a value indicating whether the email was sent successfully.
     /// </summary>
-    public bool IsSuccess { get; private set; }
+    public bool IsSuccess { get; }
+
+    public bool IsFailure => !IsSuccess;
 
     /// <summary>
-    /// Gets or sets the unique identifier of the sent message, if available.
+    /// Gets the unique identifier of the sent message, if available.
     /// </summary>
-    public string? MessageId { get; set; }
+    public string? MessageId { get; }
 
     /// <summary>
     /// Gets or sets the timestamp when the email was sent.
     /// </summary>
-    public DateTimeOffset SentAt { get; set; }
+    public DateTimeOffset SentAt { get; }
 
     /// <summary>
     /// Gets the error message if the email sending failed.
     /// </summary>
-    public string? ErrorMessage { get; private set; }
+    public string? ErrorMessage { get; }
 
     /// <summary>
     /// Gets or sets additional metadata associated with the email sending operation.
     /// </summary>
-    public Dictionary<string, object> MetaData { get; set; } = new Dictionary<string, object>();
+    public IReadOnlyDictionary<string, object> MetaData { get; }
 
     /// <summary>
     /// Initializes a new instance of the EmailSendResponse class.
     /// </summary>
-    /// <param name="isSuccess">Whether the email was sent successfully.</param>
-    /// <param name="errorMessage">The error message if the operation failed.</param>
-    /// <param name="messageId">The unique identifier of the sent message.</param>
-    /// <param name="sentAt">The timestamp when the email was sent.</param>
     private EmailSendResponse(
         bool isSuccess,
-        string? errorMessage,
-        string? messageId,
-        DateTimeOffset sentAt
+        string? errorMessage = null,
+        string? messageId = null,
+        IReadOnlyDictionary<string, object>? metaData = null,
+        DateTimeOffset? sentAt = null
     )
     {
         IsSuccess = isSuccess;
         ErrorMessage = errorMessage;
-        SentAt = sentAt;
         MessageId = messageId;
+        MetaData = metaData ?? new Dictionary<string, object>();
+        SentAt = sentAt ?? DateTimeOffset.UtcNow;
     }
 
     /// <summary>
@@ -55,9 +55,13 @@ public class EmailSendResponse
     /// </summary>
     /// <param name="messageId">Optional message identifier.</param>
     /// <returns>A new EmailSendResponse instance indicating success.</returns>
-    public static EmailSendResponse Success(string? messageId = null)
+    public static EmailSendResponse Success(
+        string? messageId = null,
+        IReadOnlyDictionary<string, object>? metaData = null,
+        DateTimeOffset? sentAt = null
+    )
     {
-        return new EmailSendResponse(true, SuccessMessage, messageId, DateTimeOffset.UtcNow);
+        return new EmailSendResponse(true, null, messageId, metaData, sentAt);
     }
 
     /// <summary>
@@ -66,13 +70,19 @@ public class EmailSendResponse
     /// <param name="errorMessage">Optional error message. If not provided, a default message will be used.</param>
     /// <param name="messageId">Optional message identifier.</param>
     /// <returns>A new EmailSendResponse instance indicating failure.</returns>
-    public static EmailSendResponse Failure(string? errorMessage = null, string? messageId = null)
+    public static EmailSendResponse Failure(
+        string? errorMessage = null,
+        string? messageId = null,
+        IReadOnlyDictionary<string, object>? metaData = null,
+        DateTimeOffset? sentAt = null
+    )
     {
         return new EmailSendResponse(
             false,
             errorMessage ?? FailureMessage,
             messageId,
-            DateTimeOffset.UtcNow
+            metaData,
+            sentAt
         );
     }
 
@@ -80,7 +90,7 @@ public class EmailSendResponse
     /// Gets the default success message.
     /// </summary>
     /// <returns>The default success message string.</returns>
-    public static string GetEmailResponseSuccessMessage()
+    private static string GetEmailResponseSuccessMessage()
     {
         return SuccessMessage;
     }
@@ -89,7 +99,7 @@ public class EmailSendResponse
     /// Gets the default failure message.
     /// </summary>
     /// <returns>The default failure message string.</returns>
-    public static string GetEmailResponseFailureMessage()
+    private static string GetEmailResponseFailureMessage()
     {
         return FailureMessage;
     }
