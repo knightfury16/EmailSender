@@ -125,4 +125,31 @@ public abstract class SendRequest
 
         _headers[name.Trim()] = value?.Trim() ?? string.Empty;
     }
+
+    public virtual void Validate()
+    {
+        if (TotalRecipientsCount == 0)
+        {
+            throw new InvalidOperationException("At least one recipient is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(Subject))
+        {
+            throw new InvalidOperationException("Subject is required.");
+        }
+
+        // Validate no duplicate recipients across different types
+        var allRecipients = To.Concat(Cc).Concat(Bcc).ToList();
+        var duplicates = allRecipients
+            .GroupBy(r => r.Address.ToLowerInvariant())
+            .Where(g => g.Count() > 1)
+            .Select(g => g.Key);
+
+        if (duplicates.Any())
+        {
+            throw new InvalidOperationException(
+                $"Duplicate recipients found: {string.Join(", ", duplicates)}"
+            );
+        }
+    }
 }
