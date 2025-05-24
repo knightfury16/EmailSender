@@ -54,4 +54,32 @@ public abstract class SendRequest
     public int TotalRecipientsCount => _to.Count + _cc.Count + _bcc.Count;
 
     protected SendRequest() { }
+
+    //Include validatin and duplication check.
+    //All add to collection should go through this method.
+    private void AddRecipients(
+        ICollection<EmailAddress> collection,
+        EmailAddress[] recipients,
+        string type
+    )
+    {
+        foreach (var recipient in recipients)
+        {
+            if (recipient == null)
+                continue;
+
+            if (collection.Count > MaxRecipientPerType)
+            {
+                throw new InvalidOperationException(
+                    $"Cannot add more than {MaxRecipientPerType} {type} recipients."
+                );
+            }
+
+            //duplication check
+            if (!collection.Contains(recipient))
+            {
+                collection.Add(recipient);
+            }
+        }
+    }
 }
