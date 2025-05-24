@@ -1,5 +1,6 @@
-namespace EmailSenderLib.OldModels;
+using EmailSenderLib.Models;
 
+namespace EmailSenderLib.OldModels;
 
 public class SendRequest
 {
@@ -87,3 +88,4 @@ public class SendRequest
         if (string.IsNullOrEmpty(Subject))
             throw new InvalidOperationException("Subject is required.");
     }
+}
