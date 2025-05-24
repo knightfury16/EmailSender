@@ -1,18 +1,38 @@
 namespace EmailSenderLib.Models;
+
 /// <summary>
 /// Represents a request to send a templated email using a predefined template.
 /// </summary>
 public class TemplatedEmailRequest : SendRequest
 {
+    private string _templateId = string.Empty;
+
     /// <summary>
     /// Gets or sets the unique identifier of the template to be used.
     /// </summary>
-    public string TemplateId { get; set; } = string.Empty;
+    public string TemplateId
+    {
+        get => _templateId;
+        set
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException(
+                    "TemplateId cannot be null or empty.",
+                    nameof(value)
+                );
+            }
+
+            _templateId = value.Trim();
+        }
+    }
 
     /// <summary>
     /// Gets or sets the content to be used for template variable substitution.
     /// </summary>
-    public object TemplateContent { get; set; } = string.Empty;
+    public object? TemplateContent { get; set; }
+
+    public bool HasTemplateContent => TemplateContent != null;
 
     /// <summary>
     /// Initializes a new instance of the TemplatedEmailRequest class with multiple recipients.
@@ -33,4 +53,16 @@ public class TemplatedEmailRequest : SendRequest
     /// </summary>
     public TemplatedEmailRequest()
         : base() { }
+
+    public TemplatedEmailRequest SetTemplate(string templateId, object? templateContent = null)
+    {
+        TemplateId = templateId;
+        TemplateContent = templateContent;
+        return this;
+    }
+
+    public override void Validate()
+    {
+        base.Validate();
+    }
 }
