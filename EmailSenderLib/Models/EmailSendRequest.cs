@@ -1,36 +1,53 @@
 namespace EmailSenderLib.Models;
+
 /// <summary>
 /// Represents a request to send a standard email with text and HTML content.
 /// </summary>
-public class EmailSendRequest : SendRequest
+public sealed class EmailSendRequest : SendRequest
 {
-    /// <summary>
-    /// Gets or sets the plain text content of the email.
-    /// </summary>
-    public string? TextContent { get; set; }
+    private string? _textContent;
+    private string? _htmlContent;
 
-    /// <summary>
-    /// Gets or sets the HTML content of the email.
-    /// </summary>
-    public string? HtmlContent { get; set; }
+    public string? TextContent
+    {
+        get => _textContent;
+        set { _textContent = string.IsNullOrWhiteSpace(value) ? null : value.Trim(); }
+    }
 
-    /// <summary>
-    /// Initializes a new instance of the EmailSendRequest class with multiple recipients.
-    /// </summary>
-    /// <param name="to">The collection of primary recipients.</param>
+    public string? HtmlContent
+    {
+        get => _htmlContent;
+        set { _htmlContent = string.IsNullOrWhiteSpace(value) ? null : value.Trim(); }
+    }
+
+    public bool HasContent =>
+        !string.IsNullOrWhiteSpace(_textContent) || !string.IsNullOrWhiteSpace(_htmlContent);
+
+    public EmailSendRequest()
+        : base() { }
+
     public EmailSendRequest(ICollection<EmailAddress> to)
         : base(to) { }
 
-    /// <summary>
-    /// Initializes a new instance of the EmailSendRequest class with a single recipient.
-    /// </summary>
-    /// <param name="to">The primary recipient.</param>
     public EmailSendRequest(EmailAddress to)
         : base(to) { }
 
-    /// <summary>
-    /// Initializes a new instance of the EmailSendRequest class with default values.
-    /// </summary>
-    public EmailSendRequest()
-        : base() { }
+    public EmailSendRequest SetContent(string? textContent, string? htmlContent)
+    {
+        TextContent = textContent;
+        HtmlContent = htmlContent;
+        return this;
+    }
+
+    public override void Validate()
+    {
+        base.Validate();
+
+        if (!HasContent)
+        {
+            throw new InvalidOperationException(
+                "Email must have either textContent or htmlContent."
+            );
+        }
+    }
 }
