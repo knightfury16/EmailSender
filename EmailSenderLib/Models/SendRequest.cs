@@ -107,4 +107,22 @@ public abstract class SendRequest
     {
         AddRecipients(_cc, recipients, CcType);
     }
+
+    public void AddHeader(string name, string value)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("Header name cannot be null or empty.", nameof(name));
+        }
+
+        if (name.Length > MaxHeaderNameLength)
+        {
+            throw new ArgumentException(
+                $"Header name too long {MaxHeaderNameLength}",
+                nameof(name)
+            );
+        }
+
+        _headers[name.Trim()] = value?.Trim() ?? string.Empty;
+    }
 }
