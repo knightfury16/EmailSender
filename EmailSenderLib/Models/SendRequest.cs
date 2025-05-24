@@ -55,6 +55,15 @@ public abstract class SendRequest
 
     protected SendRequest() { }
 
+    protected SendRequest(ICollection<EmailAddress> to)
+    {
+        ArgumentNullException.ThrowIfNull(to);
+        AddRecipients(_to, to.ToArray(), ToType);
+    }
+
+    protected SendRequest(EmailAddress to)
+        : this(new List<EmailAddress> { to }) { }
+
     //Include validatin and duplication check.
     //All add to collection should go through this method.
     private void AddRecipients(
