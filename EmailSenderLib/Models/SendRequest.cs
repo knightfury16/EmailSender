@@ -130,9 +130,9 @@ public abstract class SendRequest
     {
         ArgumentNullException.ThrowIfNull(headers);
 
-        foreach (var item in headers)
+        foreach (var header in headers)
         {
-            AddHeader(item.Key, item.Value);
+            AddHeader(header.Key, header.Value);
         }
     }
 
