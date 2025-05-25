@@ -3,8 +3,9 @@ namespace EmailSenderLib.Models;
 /// <summary>
 /// Base class for all email sending requests, containing common properties and validation logic.
 /// </summary>
-public abstract class SendRequest
+public abstract class SendRequest : IDisposable
 {
+    private bool _disposed;
     private const int MaxSubjectLength = 998; //RFC 5322 limit
     private const int MaxRecipientPerType = 100;
     private const int MaxHeaderNameLength = 76; // RFC 5322 limit
@@ -161,5 +162,19 @@ public abstract class SendRequest
                 $"Duplicate recipients found: {string.Join(", ", duplicates)}"
             );
         }
+    }
+
+    public void Dispose()
+    {
+        if (_disposed)
+            return;
+
+        foreach (var attachment in EmailAttachments)
+        {
+            attachment?.Dispose();
+        }
+
+        _disposed = true;
+        GC.SuppressFinalize(this);
     }
 }
