@@ -3,7 +3,7 @@ namespace EmailSenderLib.Models;
 /// <summary>
 /// Represents an email attachment with its content and metadata.
 /// </summary>
-public class Attachment : IDisposable
+public class EmailAttachment : IDisposable
 {
     private bool _disposed;
 
@@ -14,7 +14,7 @@ public class Attachment : IDisposable
     public bool IsInline { get; }
     public string? ContentId { get; }
 
-    private Attachment(
+    private EmailAttachment(
         Stream content,
         string fileName,
         string mimeType,
