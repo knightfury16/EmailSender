@@ -1,3 +1,5 @@
+using System.Net.Mime;
+
 namespace EmailSenderLib.Models;
 
 /// <summary>
@@ -93,6 +95,23 @@ public class EmailAttachment : IDisposable
         var fileName = Path.GetFileName(filePath);
         var resolvedMimeType = mimeType ?? GetMimeTypeFromFileName(fileName);
         return FromStream(stream, fileName, resolvedMimeType, isInline, contentId);
+    }
+
+    //for internal use only
+    internal System.Net.Mail.Attachment ToSystemMailAttachment()
+    {
+        var attachment = new System.Net.Mail.Attachment(Content, FileName, MimeType);
+
+        if (IsInline)
+        {
+            attachment.ContentId = ContentId;
+            if (attachment.ContentDisposition != null)
+            {
+                attachment.ContentDisposition.Inline = true;
+                attachment.ContentDisposition.DispositionType = DispositionTypeNames.Inline;
+            }
+        }
+        return attachment;
     }
 
     private static string GetMimeTypeFromFileName(string fileName)
