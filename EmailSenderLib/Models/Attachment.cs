@@ -52,6 +52,49 @@ public class EmailAttachment : IDisposable
         }
     }
 
+    //Factory Method
+    public static EmailAttachment FromStream(
+        Stream stream,
+        string fileName,
+        string? mimeType = null,
+        bool isInline = false,
+        string? contentId = null
+    )
+    {
+        var resolvedMimeType = mimeType ?? GetMimeTypeFromFileName(fileName);
+        return new EmailAttachment(stream, fileName, resolvedMimeType, isInline, contentId);
+    }
+
+    public static EmailAttachment FromByte(
+        byte[] bytes,
+        string fileName,
+        string? mimeType = null,
+        bool isInline = false,
+        string? contentId = null
+    )
+    {
+        var stream = new MemoryStream(bytes);
+        return FromStream(stream, fileName, mimeType, isInline, contentId);
+    }
+
+    public static EmailAttachment FromFile(
+        string filePath,
+        string? mimeType = null,
+        bool isInline = false,
+        string? contentId = null
+    )
+    {
+        if (string.IsNullOrWhiteSpace(filePath))
+        {
+            throw new ArgumentException("File path cannot be null or empty.", nameof(filePath));
+        }
+
+        var stream = File.OpenRead(filePath);
+        var fileName = Path.GetFileName(filePath);
+        var resolvedMimeType = mimeType ?? GetMimeTypeFromFileName(fileName);
+        return FromStream(stream, fileName, resolvedMimeType, isInline, contentId);
+    }
+
     private static string GetMimeTypeFromFileName(string fileName)
     {
         var ext = Path.GetExtension(fileName).ToLowerInvariant();
@@ -73,6 +116,7 @@ public class EmailAttachment : IDisposable
             _ => "application/octet-stream",
         };
     }
+
     public void Dispose()
     {
         throw new NotImplementedException();
