@@ -52,6 +52,27 @@ public class Attachment : IDisposable
         }
     }
 
+    private static string GetMimeTypeFromFileName(string fileName)
+    {
+        var ext = Path.GetExtension(fileName).ToLowerInvariant();
+
+        return ext switch
+        {
+            ".txt" => "text/plain",
+            ".html" => "text/html",
+            ".htm" => "text/html",
+            ".jpg" or ".jpeg" => "image/jpeg",
+            ".png" => "image/png",
+            ".gif" => "image/gif",
+            ".pdf" => "application/pdf",
+            ".doc" => "application/msword",
+            ".docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            ".xls" => "application/vnd.ms-excel",
+            ".xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            ".zip" => "application/zip",
+            _ => "application/octet-stream",
+        };
+    }
     public void Dispose()
     {
         throw new NotImplementedException();
