@@ -119,6 +119,11 @@ public class EmailAttachment : IDisposable
 
     public void Dispose()
     {
-        throw new NotImplementedException();
+        if (_disposed)
+            return;
+
+        Content.Dispose();
+        _disposed = true;
+        GC.SuppressFinalize(this);
     }
 }
