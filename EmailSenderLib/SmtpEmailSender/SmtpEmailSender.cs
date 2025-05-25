@@ -240,7 +240,10 @@ public class SmtpEmailSender : IEmailSender, IDisposable
 
     public void Dispose()
     {
+        if (_disposed)
+            return;
         // Nothing to dispose
+        _disposed = true;
         GC.SuppressFinalize(this);
     }
 }
