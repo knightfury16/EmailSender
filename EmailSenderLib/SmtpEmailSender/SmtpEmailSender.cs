@@ -187,7 +187,7 @@ public class SmtpEmailSender : IEmailSender, IDisposable
         }
 
         // Set the attachments
-        foreach (var attachment in request.Attachments)
+        foreach (var attachment in request.EmailAttachments)
         {
             message.Attachments.Add(attachment.ToSystemMailAttachment());
         }

@@ -15,7 +15,7 @@ public abstract class SendRequest
     private readonly List<EmailAddress> _to = new();
     private readonly List<EmailAddress> _cc = new();
     private readonly List<EmailAddress> _bcc = new();
-    private readonly List<Attachment> _attachments = new();
+    private readonly List<EmailAttachment> _emailAttachments = new();
     private readonly Dictionary<string, string> _headers = new();
 
     public EmailAddress? From { get; set; }
@@ -48,7 +48,7 @@ public abstract class SendRequest
         }
     }
 
-    public ICollection<Attachment> Attachments => _attachments;
+    public ICollection<EmailAttachment> EmailAttachments => _emailAttachments;
 
     public EmailPriority Priority { get; set; } = EmailPriority.Normal;
     public Dictionary<string, string> Headers => _headers;
