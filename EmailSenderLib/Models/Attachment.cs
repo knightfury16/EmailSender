@@ -3,75 +3,57 @@ namespace EmailSenderLib.Models;
 /// <summary>
 /// Represents an email attachment with its content and metadata.
 /// </summary>
-public class Attachment
+public class Attachment : IDisposable
 {
-    /// <summary>
-    /// Gets or sets the binary content of the attachment.
-    /// </summary>
-    public byte[]? Content { get; set; }
+    private bool _disposed;
 
-    /// <summary>
-    /// Gets or sets the name of the attached file.
-    /// </summary>
-    public string? FileName { get; set; }
+    public string FileName { get; }
+    public Stream Content { get; }
+    public string MimeType { get; }
 
-    /// <summary>
-    /// Gets or sets the MIME type of the attachment content.
-    /// </summary>
-    public string? ContentType { get; set; }
+    public bool IsInline { get; }
+    public string? ContentId { get; }
 
-    /// <summary>
-    /// Gets or sets the content identifier used for inline attachments.
-    /// </summary>
-    public string? ContentId { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the attachment should be displayed inline in the email body.
-    /// </summary>
-    public bool IsInline { get; set; }
-
-    /// <summary>
-    /// Initializes a new instance of the Attachment class.
-    /// </summary>
-    public Attachment() { }
-
-    /// <summary>
-    /// Converts this attachment to a System.Net.Mail.Attachment object.
-    /// </summary>
-    /// <returns>A System.Net.Mail.Attachment object representing the same attachment.</returns>
-    /// <exception cref="ArgumentNullException">Thrown when Content or FileName is null.</exception>
-    public System.Net.Mail.Attachment ToSystemMailAttachment()
+    private Attachment(
+        Stream content,
+        string fileName,
+        string mimeType,
+        bool isInline = false,
+        string? contentId = null
+    )
     {
-        if (Content == null)
+        if (content == null || !content.CanRead)
         {
-            throw new ArgumentNullException(nameof(Content), "Attachment content cannot be null");
+            throw new ArgumentException("Content stream must be readable.", nameof(content));
         }
 
-        if (string.IsNullOrEmpty(FileName))
+        if (string.IsNullOrWhiteSpace(fileName))
         {
-            throw new ArgumentNullException(
-                nameof(FileName),
-                "Attachment filename cannot be null or empty"
-            );
+            throw new ArgumentException("File name cannot be null or empty", nameof(fileName));
         }
 
-        var memoryStream = new MemoryStream(Content);
-        var attachment = new System.Net.Mail.Attachment(memoryStream, FileName);
+        Content = content;
+        FileName = fileName;
+        MimeType = string.IsNullOrWhiteSpace(mimeType)
+            ? "application/octet-stream"
+            : mimeType.Trim();
+        IsInline = isInline;
 
-        if (!string.IsNullOrEmpty(ContentType))
+        if (isInline)
         {
-            attachment.ContentType = new System.Net.Mime.ContentType(ContentType);
-        }
-
-        if (IsInline && !string.IsNullOrEmpty(ContentId))
-        {
-            attachment.ContentId = ContentId;
-            if (attachment.ContentDisposition != null)
+            if (string.IsNullOrWhiteSpace(contentId))
             {
-                attachment.ContentDisposition.Inline = true;
+                throw new ArgumentException(
+                    "Content Id must be provided for inline attachment.",
+                    nameof(contentId)
+                );
             }
+            ContentId = contentId;
         }
+    }
 
-        return attachment;
+    public void Dispose()
+    {
+        throw new NotImplementedException();
     }
 }
