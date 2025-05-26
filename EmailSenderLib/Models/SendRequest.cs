@@ -12,6 +12,7 @@ public abstract class SendRequest : IDisposable
     private const string ToType = "TO";
     private const string BccType = "BCC";
     private const string CcType = "CC";
+    public static readonly string MessageIdKey = "MessageId";
 
     private readonly List<EmailAddress> _to = new();
     private readonly List<EmailAddress> _cc = new();
