@@ -53,12 +53,17 @@ public abstract class SendRequest : IDisposable
     public ICollection<EmailAttachment> EmailAttachments => _emailAttachments;
 
     public EmailPriority Priority { get; set; } = EmailPriority.Normal;
+    public string MessageId { get; }
     public Dictionary<string, string> Headers => _headers;
     public int TotalRecipientsCount => _to.Count + _cc.Count + _bcc.Count;
 
-    internal SendRequest() { }
+    internal SendRequest()
+    {
+        MessageId = GenerateMessageId();
+        _headers[MessageIdKey] = MessageId; // include it in the headers. Can use it later in Sytem.Net.Mail.MailMessage. MailMessage dont have MessgaId prop
+    }
 
-    protected SendRequest(ICollection<EmailAddress> to)
+    protected SendRequest(ICollection<EmailAddress> to) : this()
     {
         ArgumentNullException.ThrowIfNull(to);
         AddRecipients(_to, to.ToArray(), ToType);
@@ -93,6 +98,12 @@ public abstract class SendRequest : IDisposable
                 collection.Add(recipient);
             }
         }
+    }
+
+
+    private string GenerateMessageId()
+    {
+        return Guid.NewGuid().ToString();
     }
 
     public void AddTo(params EmailAddress[] recipients)
