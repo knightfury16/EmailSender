@@ -55,7 +55,7 @@ public abstract class SendRequest : IDisposable
     public Dictionary<string, string> Headers => _headers;
     public int TotalRecipientsCount => _to.Count + _cc.Count + _bcc.Count;
 
-    protected SendRequest() { }
+    internal SendRequest() { }
 
     protected SendRequest(ICollection<EmailAddress> to)
     {

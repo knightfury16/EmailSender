@@ -23,7 +23,7 @@ public sealed class EmailSendRequest : SendRequest
     public bool HasContent =>
         !string.IsNullOrWhiteSpace(_textContent) || !string.IsNullOrWhiteSpace(_htmlContent);
 
-    public EmailSendRequest()
+    internal EmailSendRequest()
         : base() { }
 
     public EmailSendRequest(ICollection<EmailAddress> to)

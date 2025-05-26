@@ -51,7 +51,7 @@ public sealed class TemplatedEmailRequest : SendRequest
     /// <summary>
     /// Initializes a new instance of the TemplatedEmailRequest class with default values.
     /// </summary>
-    public TemplatedEmailRequest()
+    internal TemplatedEmailRequest()
         : base() { }
 
     public TemplatedEmailRequest SetTemplate(string templateId, object? templateContent = null)
