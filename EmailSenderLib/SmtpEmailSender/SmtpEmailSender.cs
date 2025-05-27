@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace EmailSenderLib.SmtpEmailSender;
 
-public class SmtpEmailSender : IEmailSender, IDisposable
+public sealed class SmtpEmailSender : IEmailSender, IDisposable
 {
     private readonly SmtpEmailSettings _settings;
     private readonly ILogger<SmtpEmailSettings> _logger;
@@ -147,12 +147,12 @@ public class SmtpEmailSender : IEmailSender, IDisposable
         return responses;
     }
 
-    protected virtual SmtpClient CreateSmtpClient()
+    private SmtpClient CreateSmtpClient()
     {
         throw new NotImplementedException();
     }
 
-    protected virtual MailMessage CreateMailMessage(EmailSendRequest request)
+    private MailMessage CreateMailMessage(EmailSendRequest request)
     {
         ArgumentNullException.ThrowIfNull(request);
 
