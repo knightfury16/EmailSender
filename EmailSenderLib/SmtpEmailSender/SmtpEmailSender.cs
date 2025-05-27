@@ -1,3 +1,4 @@
+using System.Net;
 using System.Net.Mail;
 using EmailSenderLib.Models;
 using EmailSenderLib.TemplateRenderer;
@@ -40,7 +41,11 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
             using var message = CreateMailMessage(request);
             using var smtpClient = CreateSmtpClient();
 
-            _logger?.LogInformation("Sending Emails to {Recipients} with subject: {Subject}", string.Join(",", request.To.Select(t => t.Address)), message.Subject);
+            _logger?.LogInformation(
+                "Sending Emails to {Recipients} with subject: {Subject}",
+                string.Join(",", request.To.Select(t => t.Address)),
+                message.Subject
+            );
 
             await smtpClient.SendMailAsync(message, cancellationToken);
 
@@ -52,12 +57,16 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
         }
         catch (OperationCanceledException)
         {
-            _logger.LogWarning($"Email sending with subject {request.Subject} messageId {request.MessageId} was cancelled.");
+            _logger.LogWarning(
+                $"Email sending with subject {request.Subject} messageId {request.MessageId} was cancelled."
+            );
             throw;
         }
         catch (System.Exception ex)
         {
-            _logger?.LogError($"Failed email sending with {request.Subject} and messageId {request.MessageId}. Error: {ex.Message}");
+            _logger?.LogError(
+                $"Failed email sending with {request.Subject} and messageId {request.MessageId}. Error: {ex.Message}"
+            );
             return EmailSendResponse.Failure(ex.Message);
         }
     }
