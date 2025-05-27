@@ -149,7 +149,48 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
 
     private SmtpClient CreateSmtpClient()
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrEmpty(_settings.SmtpServer))
+        {
+            throw new InvalidOperationException("Smtp server is required.");
+        }
+
+        var smtpServer = _settings.SmtpServer;
+        var port = _settings.SmtpPort;
+        var timeOut = _settings.TimeoutMilliseconds;
+        var enableSsl = _settings.EnableSsl;
+
+        var smtpClient = new SmtpClient
+        {
+            Host = smtpServer,
+            Port = port,
+            EnableSsl = enableSsl,
+            DeliveryMethod = SmtpDeliveryMethod.Network,
+            Timeout = timeOut,
+            UseDefaultCredentials = false,
+        };
+
+        smtpClient.Credentials = CreateNetworkCredential();
+
+        return smtpClient;
+    }
+
+    private NetworkCredential CreateNetworkCredential()
+    {
+        if (string.IsNullOrEmpty(_settings.UserName) || string.IsNullOrEmpty(_settings.Password))
+        {
+            throw new ArgumentNullException(
+                "Username and password is required to create credential",
+                "Credentials"
+            );
+        }
+
+        var userName = _settings.UserName;
+        var password = _settings.Password;
+        var domain = _settings.Domain;
+
+        return string.IsNullOrEmpty(domain)
+            ? new NetworkCredential(userName, password)
+            : new NetworkCredential(userName, password, domain);
     }
 
     private MailMessage CreateMailMessage(EmailSendRequest request)
