@@ -255,7 +255,7 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
         }
 
         // Set the priority
-        message.Priority = ConverPriority(request.Priority);
+        message.Priority = ConvertPriority(request.Priority);
 
         // Set the headers
         foreach (var header in request.Headers)
@@ -269,7 +269,7 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
         return message;
     }
 
-    private MailPriority ConverPriority(EmailPriority priority)
+    private MailPriority ConvertPriority(EmailPriority priority)
     {
         return priority switch
         {
