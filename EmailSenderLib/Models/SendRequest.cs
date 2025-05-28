@@ -149,6 +149,23 @@ public abstract class SendRequest : IDisposable
         }
     }
 
+    public void AddAttachment(EmailAttachment attachment)
+    {
+        ArgumentNullException.ThrowIfNull(attachment);
+        _emailAttachments.Add(attachment);
+    }
+
+    public void AddAttachment(List<EmailAttachment> attachments)
+    {
+        ArgumentNullException.ThrowIfNull(attachments);
+
+        foreach (var attachment in attachments)
+        {
+            if (attachment == null) continue;
+            _emailAttachments.Add(attachment);
+        }
+    }
+
     public virtual void Validate()
     {
         if (TotalRecipientsCount == 0)
