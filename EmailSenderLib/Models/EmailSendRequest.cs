@@ -3,7 +3,7 @@ namespace EmailSenderLib.Models;
 /// <summary>
 /// Represents a request to send a standard email with text and HTML content.
 /// </summary>
-public sealed class EmailSendRequest : SendRequest
+public sealed class EmailRequest : SendRequest
 {
     private const int MaxContentLength = 1024 * 1024; // 1MB limit for content
     private string? _textContent;
@@ -44,16 +44,16 @@ public sealed class EmailSendRequest : SendRequest
     public bool HasContent =>
         !string.IsNullOrWhiteSpace(_textContent) || !string.IsNullOrWhiteSpace(_htmlContent);
 
-    internal EmailSendRequest()
+    internal EmailRequest()
         : base() { }
 
-    public EmailSendRequest(ICollection<EmailAddress> to)
+    public EmailRequest(ICollection<EmailAddress> to)
         : base(to) { }
 
-    public EmailSendRequest(EmailAddress to)
+    public EmailRequest(EmailAddress to)
         : base(to) { }
 
-    public EmailSendRequest SetContent(string? textContent, string? htmlContent)
+    public EmailRequest SetContent(string? textContent, string? htmlContent)
     {
         if (string.IsNullOrWhiteSpace(textContent) && string.IsNullOrWhiteSpace(htmlContent))
         {

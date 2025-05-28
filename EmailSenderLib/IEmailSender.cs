@@ -2,8 +2,6 @@ namespace EmailSenderLib;
 
 using EmailSenderLib.Models;
 
-
-
 public interface IEmailSender
 {
     /// <summary>
@@ -13,7 +11,7 @@ public interface IEmailSender
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the email sending response.</returns>
     public Task<EmailSendResponse> SendEmailAsync(
-        EmailSendRequest request,
+        EmailRequest request,
         CancellationToken cancellationToken = default
     );
 
@@ -24,7 +22,7 @@ public interface IEmailSender
     /// <param name="cancellationToken">A token to cancel the operation.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the email sending response.</returns>
     public Task<IEnumerable<EmailSendResponse>> SendBulkEmailAsync(
-        ICollection<EmailSendRequest> requests,
+        ICollection<EmailRequest> requests,
         CancellationToken cancellationToken = default
     );
 
@@ -50,4 +48,3 @@ public interface IEmailSender
         CancellationToken cancellationToken = default
     );
 }
-

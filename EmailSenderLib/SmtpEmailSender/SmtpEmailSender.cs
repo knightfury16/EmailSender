@@ -28,7 +28,7 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
     }
 
     public async Task<EmailSendResponse> SendEmailAsync(
-        EmailSendRequest request,
+        EmailRequest request,
         CancellationToken cancellationToken = default
     )
     {
@@ -101,7 +101,7 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
                 cancellationToken
             );
 
-            var emailRequest = new EmailSendRequest(request.To)
+            var emailRequest = new EmailRequest(request.To)
             {
                 From = request.From,
                 Subject = request.Subject,
@@ -123,7 +123,7 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
     }
 
     public async Task<IEnumerable<EmailSendResponse>> SendBulkEmailAsync(
-        ICollection<EmailSendRequest> requests,
+        ICollection<EmailRequest> requests,
         CancellationToken cancellationToken = default
     )
     {
@@ -196,7 +196,7 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
             : new NetworkCredential(userName, password, domain);
     }
 
-    private MailMessage CreateMailMessage(EmailSendRequest request)
+    private MailMessage CreateMailMessage(EmailRequest request)
     {
         ArgumentNullException.ThrowIfNull(request);
 
