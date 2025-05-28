@@ -11,13 +11,13 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
 {
     private readonly SmtpEmailSettings _settings;
     private readonly ILogger<SmtpEmailSettings> _logger;
-    private readonly ITemplateRenderer _templateRenderer;
+    private readonly ITemplateRenderer? _templateRenderer;
     private bool _disposed;
 
     public SmtpEmailSender(
         IOptions<SmtpEmailSettings> settings,
         ILogger<SmtpEmailSettings> logger,
-        ITemplateRenderer templateRenderer
+        ITemplateRenderer? templateRenderer = null
     )
     {
         _settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
