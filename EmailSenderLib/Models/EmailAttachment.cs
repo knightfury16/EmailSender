@@ -8,6 +8,7 @@ namespace EmailSenderLib.Models;
 public class EmailAttachment : IDisposable
 {
     private bool _disposed;
+    private int MaxAttachmentSize = 25 * 1024 * 1024; // 25MiB
 
     public string FileName { get; }
     public Stream Content { get; }
@@ -33,6 +34,17 @@ public class EmailAttachment : IDisposable
         {
             throw new ArgumentException("File name cannot be null or empty", nameof(fileName));
         }
+
+        if (!content.CanSeek)
+        {
+            throw new NotSupportedException("Cannot check size of a non-seekabel stream.");
+        }
+
+        if (content.Length > MaxAttachmentSize)
+        {
+            throw new InvalidOperationException($"Attachment size exceeded the max attachment size: {MaxAttachmentSize} bytes");
+        }
+
 
         Content = content;
         FileName = fileName;
