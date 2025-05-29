@@ -137,7 +137,7 @@ public abstract class SendRequest : IDisposable
         if (name.Length > MaxHeaderNameLength)
         {
             throw new ArgumentException(
-                $"Header name too long {MaxHeaderNameLength}",
+                $"Header name cannot exceed {MaxHeaderNameLength} characters.",
                 nameof(name)
             );
         }
@@ -184,7 +184,7 @@ public abstract class SendRequest : IDisposable
             throw new InvalidOperationException("Subject is required.");
         }
 
-        // Validate no duplicate recipients across different types
+        // Validate no duplicate recipients across different types using case-insensitive comparison
         var allRecipients = To.Concat(Cc).Concat(Bcc).ToList();
         var duplicates = allRecipients
             .GroupBy(r => r.Address.ToLowerInvariant())
