@@ -51,7 +51,7 @@ public class EmailAddress : IEquatable<EmailAddress>
 
         try
         {
-            if (address == null)
+            if (string.IsNullOrWhiteSpace(address))
                 return false;
 
             emailAddress = new EmailAddress(address, displayName);
