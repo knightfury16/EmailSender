@@ -55,6 +55,8 @@ public class EmailAttachment : IDisposable
         ValidateFileName(fileName);
         ValidateFileSize(content);
 
+        // Reset stream position after size check
+        content.Position = 0;
 
         Content = content;
         FileName = fileName;
