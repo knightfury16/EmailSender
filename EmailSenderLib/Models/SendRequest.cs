@@ -28,7 +28,7 @@ public abstract class SendRequest : IDisposable
 
     private string _subject = string.Empty;
 
-    public required string Subject
+    public string Subject
     {
         get => _subject;
         set
