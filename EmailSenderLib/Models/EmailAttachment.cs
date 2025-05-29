@@ -156,10 +156,22 @@ public class EmailAttachment : IDisposable
             throw new ArgumentException("File path cannot be null or empty.", nameof(filePath));
         }
 
-        var stream = File.OpenRead(filePath);
-        var fileName = Path.GetFileName(filePath);
-        var resolvedMimeType = mimeType ?? GetMimeTypeFromFileName(fileName);
-        return FromStream(stream, fileName, resolvedMimeType, isInline, contentId);
+        if (!File.Exists(filePath))
+        {
+            throw new FileNotFoundException("The specified file was not found.", filePath);
+        }
+
+        try
+        {
+            var stream = File.OpenRead(filePath);
+            var fileName = Path.GetFileName(filePath);
+            var resolvedMimeType = mimeType ?? GetMimeTypeFromFileName(fileName);
+            return FromStream(stream, fileName, resolvedMimeType, isInline, contentId);
+        }
+        catch (Exception ex) when (ex is not ArgumentException && ex is not FileNotFoundException)
+        {
+            throw new InvalidOperationException($"Failed to read file: {filePath}", ex);
+        }
     }
 
     //for internal use only
