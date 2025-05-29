@@ -105,7 +105,11 @@ public abstract class SendRequest : IDisposable
 
     private string GenerateMessageId()
     {
-        return Guid.NewGuid().ToString();
+        // RFC 5322 compliant Message-ID format
+        var domain = From?.Domain ?? "localhost";
+        var timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+        var uniqueId = Guid.NewGuid().ToString("N");
+        return $"<{timestamp}.{uniqueId}@{domain}>";
     }
 
     public void AddTo(params EmailAddress[] recipients)
