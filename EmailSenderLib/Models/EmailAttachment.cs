@@ -52,6 +52,8 @@ public class EmailAttachment : IDisposable
             throw new NotSupportedException("Content stream must be seekable to check size.");
         }
 
+        ValidateFileName(fileName);
+        ValidateFileSize(content);
 
 
         Content = content;
