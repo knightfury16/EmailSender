@@ -70,5 +70,19 @@ public sealed class EmailSendRequest : SendRequest
                 "Email must have either textContent or htmlContent."
             );
         }
+
+        if (_textContent != null && _textContent.Length > MaxContentLength)
+        {
+            throw new InvalidOperationException(
+                $"Text content cannot exceed {MaxContentLength} characters."
+            );
+        }
+
+        if (_htmlContent != null && _htmlContent.Length > MaxContentLength)
+        {
+            throw new InvalidOperationException(
+                $"HTML content cannot exceed {MaxContentLength} characters."
+            );
+        }
     }
 }
