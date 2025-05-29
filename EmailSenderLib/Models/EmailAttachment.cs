@@ -70,7 +70,7 @@ public class EmailAttachment : IDisposable
             if (string.IsNullOrWhiteSpace(contentId))
             {
                 throw new ArgumentException(
-                    "Content Id must be provided for inline attachment.",
+                    "Content ID must be provided for inline attachment.",
                     nameof(contentId)
                 );
             }
