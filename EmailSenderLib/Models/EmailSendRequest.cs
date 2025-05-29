@@ -12,13 +12,33 @@ public sealed class EmailSendRequest : SendRequest
     public string? TextContent
     {
         get => _textContent;
-        set { _textContent = string.IsNullOrWhiteSpace(value) ? null : value.Trim(); }
+        set
+        {
+            if (value != null && value.Length > MaxContentLength)
+            {
+                throw new ArgumentException(
+                    $"Text content cannot exceed {MaxContentLength} characters.",
+                    nameof(value)
+                );
+            }
+            _textContent = string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+        }
     }
 
     public string? HtmlContent
     {
         get => _htmlContent;
-        set { _htmlContent = string.IsNullOrWhiteSpace(value) ? null : value.Trim(); }
+        set
+        {
+            if (value != null && value.Length > MaxContentLength)
+            {
+                throw new ArgumentException(
+                    $"HTML content cannot exceed {MaxContentLength} characters.",
+                    nameof(value)
+                );
+            }
+            _htmlContent = string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+        }
     }
 
     public bool HasContent =>
