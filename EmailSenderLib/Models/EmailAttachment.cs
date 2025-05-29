@@ -37,25 +37,21 @@ public class EmailAttachment : IDisposable
         string? contentId = null
     )
     {
-        if (content == null || !content.CanRead)
+        if (content == null)
+        {
+            throw new ArgumentNullException(nameof(content), "Content stream cannot be null.");
+        }
+
+        if (!content.CanRead)
         {
             throw new ArgumentException("Content stream must be readable.", nameof(content));
         }
 
-        if (string.IsNullOrWhiteSpace(fileName))
-        {
-            throw new ArgumentException("File name cannot be null or empty", nameof(fileName));
-        }
-
         if (!content.CanSeek)
         {
-            throw new NotSupportedException("Cannot check size of a non-seekabel stream.");
+            throw new NotSupportedException("Content stream must be seekable to check size.");
         }
 
-        if (content.Length > MaxAttachmentSize)
-        {
-            throw new InvalidOperationException($"Attachment size exceeded the max attachment size: {MaxAttachmentSize} bytes");
-        }
 
 
         Content = content;
