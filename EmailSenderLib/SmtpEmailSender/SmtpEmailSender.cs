@@ -12,6 +12,7 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
     private readonly SmtpEmailSettings _settings;
     private readonly ILogger<SmtpEmailSettings> _logger;
     private readonly ITemplateRenderer? _templateRenderer;
+    private readonly SmtpClient _smtpClient;
     private bool _disposed;
 
     public SmtpEmailSender(
@@ -23,6 +24,7 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
         _settings = settings?.Value ?? throw new ArgumentNullException(nameof(settings));
         _logger = logger;
         _templateRenderer = templateRenderer;
+        _smtpClient = CreateSmtpClient();
     }
 
     public async Task<EmailSendResponse> SendEmailAsync(
@@ -40,7 +42,6 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
                 request.Subject, request.MessageId);
 
             using var message = CreateMailMessage(request);
-            using var smtpClient = CreateSmtpClient();
 
             _logger?.LogInformation(
                 "Sending email to {Recipients} with subject: {Subject} and messageId: {MessageId}",
@@ -49,7 +50,7 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
                 request.MessageId
             );
 
-            await smtpClient.SendMailAsync(message, cancellationToken);
+            await _smtpClient.SendMailAsync(message, cancellationToken);
 
             var messageId = message.Headers[SendRequest.MessageIdKey];
 
