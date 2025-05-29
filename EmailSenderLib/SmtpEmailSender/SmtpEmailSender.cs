@@ -129,19 +129,11 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
     {
         ArgumentNullException.ThrowIfNull(requests);
 
-        var responses = new List<EmailSendResponse>();
+        var tasks = requests.Select(request => 
+            Task.Run(() => SendEmailAsync(request, cancellationToken), cancellationToken)
+        );
 
-        foreach (var request in requests)
-        {
-            if (cancellationToken.IsCancellationRequested)
-            {
-                break;
-            }
-            var response = await SendEmailAsync(request, cancellationToken);
-            responses.Add(response);
-        }
-
-        return responses;
+        return await Task.WhenAll(tasks);
     }
 
     public async Task<IEnumerable<EmailSendResponse>> SendBulkTemplatedEmailAsync(
@@ -151,18 +143,11 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
     {
         ArgumentNullException.ThrowIfNull(requests);
 
-        var responses = new List<EmailSendResponse>();
+        var tasks = requests.Select(request => 
+            Task.Run(() => SendTemplatedEmailAsync(request, cancellationToken), cancellationToken)
+        );
 
-        foreach (var request in requests)
-        {
-            if (cancellationToken.IsCancellationRequested)
-            {
-                break;
-            }
-            var response = await SendTemplatedEmailAsync(request, cancellationToken);
-            responses.Add(response);
-        }
-        return responses;
+        return await Task.WhenAll(tasks);
     }
 
     private SmtpClient CreateSmtpClient()
