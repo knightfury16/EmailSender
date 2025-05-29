@@ -38,7 +38,7 @@ public abstract class SendRequest : IDisposable
                 throw new ArgumentException("Subject cannot be null or empty.", nameof(value));
             }
 
-            if (_subject.Length > MaxSubjectLength)
+            if (value.Length > MaxSubjectLength)
             {
                 throw new ArgumentException(
                     $"Subject can not exceed {MaxSubjectLength} characters.",
