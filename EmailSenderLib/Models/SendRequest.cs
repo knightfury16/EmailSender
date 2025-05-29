@@ -6,8 +6,8 @@ namespace EmailSenderLib.Models;
 public abstract class SendRequest : IDisposable
 {
     private bool _disposed;
-    private const int MaxSubjectLength = 998; //RFC 5322 limit
-    private const int MaxRecipientPerType = 100;
+    private const int MaxSubjectLength = 998; // RFC 5322 limit
+    private const int MaxRecipientPerType = 500; // Increased from 100 to 500 for bulk operations
     private const int MaxHeaderNameLength = 76; // RFC 5322 limit
     private const string ToType = "TO";
     private const string BccType = "BCC";
