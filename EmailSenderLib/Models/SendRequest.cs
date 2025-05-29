@@ -94,8 +94,8 @@ public abstract class SendRequest : IDisposable
                 );
             }
 
-            //duplication check
-            if (!collection.Contains(recipient))
+            // Check for duplicates using case-insensitive comparison
+            if (!collection.Any(r => r.Equals(recipient)))
             {
                 collection.Add(recipient);
             }
