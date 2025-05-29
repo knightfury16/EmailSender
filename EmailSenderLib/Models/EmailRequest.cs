@@ -9,6 +9,7 @@ public sealed class EmailRequest : SendRequest
     private string? _textContent;
     private string? _htmlContent;
 
+    //If both Text and Html content is set, Html content will take precedence
     public string? TextContent
     {
         get => _textContent;
