@@ -92,3 +92,8 @@ public sealed class EmailRequest : SendRequest
         }
     }
 }
+internal class ContentType
+{
+    public static readonly string Html = "Html";
+    public static readonly string Text = "Text";
+}
