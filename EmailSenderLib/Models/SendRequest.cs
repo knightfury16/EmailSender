@@ -80,6 +80,8 @@ public abstract class SendRequest : IDisposable
         string type
     )
     {
+        ArgumentNullException.ThrowIfNull(recipients);
+
         foreach (var recipient in recipients)
         {
             if (recipient == null)
