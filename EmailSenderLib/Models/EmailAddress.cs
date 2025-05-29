@@ -13,11 +13,10 @@ public class EmailAddress : IEquatable<EmailAddress>
         @"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$",
         RegexOptions.Compiled | RegexOptions.IgnoreCase
     );
-    private const int MaxEmailLength = 254; //RFC 5321 limit
-    private const int MaxDisplayNameLength = 64; //RFC 5322 recommendation
+    private const int MaxEmailLength = 254; // RFC 5321 limit
+    private const int MaxDisplayNameLength = 64; // RFC 5322 recommendation
 
     public string Address { get; }
-
     public string? DisplayName { get; }
 
     [JsonIgnore]
