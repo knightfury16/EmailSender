@@ -55,6 +55,11 @@ public sealed class EmailSendRequest : SendRequest
 
     public EmailSendRequest SetContent(string? textContent, string? htmlContent)
     {
+        if (string.IsNullOrWhiteSpace(textContent) && string.IsNullOrWhiteSpace(htmlContent))
+        {
+            throw new ArgumentException("At least one of textContent or htmlContent must be provided.");
+        }
+
         TextContent = textContent;
         HtmlContent = htmlContent;
         return this;
