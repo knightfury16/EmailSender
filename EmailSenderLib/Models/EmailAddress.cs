@@ -100,7 +100,7 @@ public class EmailAddress : IEquatable<EmailAddress>
         {
             var _ = new MailAddress(address);
         }
-        catch (System.FormatException ex)
+        catch (FormatException ex)
         {
             throw new ArgumentException("Invalid email address format.", nameof(address), ex);
         }
