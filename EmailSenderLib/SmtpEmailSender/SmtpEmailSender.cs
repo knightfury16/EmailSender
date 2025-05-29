@@ -296,10 +296,10 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
 
     public void Dispose()
     {
-        if (_disposed)
-            return;
-        // Nothing to dispose
-        _disposed = true;
-        GC.SuppressFinalize(this);
+        if (!_disposed)
+        {
+            _smtpClient?.Dispose();
+            _disposed = true;
+        }
     }
 }
