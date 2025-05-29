@@ -26,7 +26,7 @@ public abstract class SendRequest : IDisposable
     public ICollection<EmailAddress> Cc => _cc;
     public ICollection<EmailAddress> Bcc => _bcc;
 
-    private string _subject = String.Empty;
+    private string _subject = string.Empty;
 
     public required string Subject
     {
