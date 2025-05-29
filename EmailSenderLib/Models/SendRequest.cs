@@ -41,7 +41,7 @@ public abstract class SendRequest : IDisposable
             if (value.Length > MaxSubjectLength)
             {
                 throw new ArgumentException(
-                    $"Subject can not exceed {MaxSubjectLength} characters.",
+                    $"Subject cannot exceed {MaxSubjectLength} characters.",
                     nameof(value)
                 );
             }
