@@ -5,6 +5,7 @@ namespace EmailSenderLib.Models;
 /// </summary>
 public sealed class EmailSendRequest : SendRequest
 {
+    private const int MaxContentLength = 1024 * 1024; // 1MB limit for content
     private string? _textContent;
     private string? _htmlContent;
 
