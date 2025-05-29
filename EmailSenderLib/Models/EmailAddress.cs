@@ -35,7 +35,7 @@ public class EmailAddress : IEquatable<EmailAddress>
         ValidateEmail(address);
         ValidateDisplayName(displayName);
 
-        Address = address;
+        Address = address.ToLowerInvariant(); // Normalize email addresses to lowercase
         DisplayName = string.IsNullOrWhiteSpace(displayName) ? null : displayName.Trim();
     }
 
