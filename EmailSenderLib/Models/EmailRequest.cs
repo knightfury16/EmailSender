@@ -42,15 +42,15 @@ public sealed class EmailRequest : SendRequest
     public EmailRequest(EmailAddress to)
         : base(to) { }
 
-    public EmailRequest SetContent(string? textContent, string? htmlContent)
+    public EmailRequest SetTextContent(string? textContent)
     {
-        if (string.IsNullOrWhiteSpace(textContent) && string.IsNullOrWhiteSpace(htmlContent))
-        {
-            throw new ArgumentException("At least one of textContent or htmlContent must be provided.");
-        }
+        TextContent = textContent; // this trigger the set where the validation takes place
+        return this;
+    }
 
-        TextContent = textContent;
-        HtmlContent = htmlContent;
+    public EmailRequest SetHtmlContent(string? htmlContent)
+    {
+        HtmlContent = htmlContent; // this trigger the set where the validation takes place
         return this;
     }
 
