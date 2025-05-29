@@ -15,13 +15,7 @@ public sealed class EmailRequest : SendRequest
         get => _textContent;
         set
         {
-            if (value != null && value.Length > MaxContentLength)
-            {
-                throw new ArgumentException(
-                    $"Text content cannot exceed {MaxContentLength} characters.",
-                    nameof(value)
-                );
-            }
+            ValidateContentLength(value, ContentType.Text);
             _textContent = string.IsNullOrWhiteSpace(value) ? null : value.Trim();
         }
     }
@@ -31,13 +25,7 @@ public sealed class EmailRequest : SendRequest
         get => _htmlContent;
         set
         {
-            if (value != null && value.Length > MaxContentLength)
-            {
-                throw new ArgumentException(
-                    $"HTML content cannot exceed {MaxContentLength} characters.",
-                    nameof(value)
-                );
-            }
+            ValidateContentLength(value, ContentType.Html);
             _htmlContent = string.IsNullOrWhiteSpace(value) ? null : value.Trim();
         }
     }
@@ -77,14 +65,10 @@ public sealed class EmailRequest : SendRequest
             );
         }
 
-        if (_textContent != null && _textContent.Length > MaxContentLength)
-        {
-            throw new InvalidOperationException(
-                $"Text content cannot exceed {MaxContentLength} characters."
-            );
-        }
+        ValidateContentLength(_textContent, ContentType.Text);
+        ValidateContentLength(_htmlContent, ContentType.Html);
+    }
 
-        if (_htmlContent != null && _htmlContent.Length > MaxContentLength)
     public static void ValidateContentLength(string? content, string contentType)
     {
         if (content != null && content.Length > MaxContentLength)
