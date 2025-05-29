@@ -177,6 +177,8 @@ public class EmailAttachment : IDisposable
     //for internal use only
     internal System.Net.Mail.Attachment ToSystemMailAttachment()
     {
+        ThrowIfDisposed();
+
         var attachment = new System.Net.Mail.Attachment(Content, FileName, MimeType);
 
         if (IsInline)
