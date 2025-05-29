@@ -9,6 +9,12 @@ public class EmailAttachment : IDisposable
 {
     private bool _disposed;
     private const int MaxAttachmentSize = 25 * 1024 * 1024; // 25MiB
+    private static readonly HashSet<string> AllowedExtensions = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ".txt", ".html", ".htm", ".jpg", ".jpeg", ".png", ".gif", ".pdf",
+        ".doc", ".docx", ".xls", ".xlsx", ".zip", ".csv", ".rtf", ".odt",
+        ".ods", ".odp", ".ppt", ".pptx"
+    };
 
     public string FileName { get; }
     public Stream Content { get; }
