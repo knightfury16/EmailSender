@@ -199,17 +199,30 @@ public abstract class SendRequest : IDisposable
         }
     }
 
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                foreach (var attachment in EmailAttachments)
+                {
+                    attachment?.Dispose();
+                }
+            }
+
+            _disposed = true;
+        }
+    }
+
     public void Dispose()
     {
-        if (_disposed)
-            return;
-
-        foreach (var attachment in EmailAttachments)
-        {
-            attachment?.Dispose();
-        }
-
-        _disposed = true;
+        Dispose(true);
         GC.SuppressFinalize(this);
+    }
+
+    ~SendRequest()
+    {
+        Dispose(false);
     }
 }
