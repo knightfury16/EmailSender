@@ -85,13 +85,18 @@ public sealed class EmailRequest : SendRequest
         }
 
         if (_htmlContent != null && _htmlContent.Length > MaxContentLength)
+    public static void ValidateContentLength(string? content, string contentType)
+    {
+        if (content != null && content.Length > MaxContentLength)
         {
-            throw new InvalidOperationException(
-                $"HTML content cannot exceed {MaxContentLength} characters."
+            throw new ArgumentException(
+                $"{contentType} content cannot exceed {MaxContentLength} characters.",
+                nameof(content)
             );
         }
     }
 }
+
 internal class ContentType
 {
     public static readonly string Html = "Html";
