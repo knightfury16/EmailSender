@@ -126,6 +126,7 @@ public class EmailAttachment : IDisposable
         string? contentId = null
     )
     {
+        ArgumentNullException.ThrowIfNull(stream);
         var resolvedMimeType = mimeType ?? GetMimeTypeFromFileName(fileName);
         return new EmailAttachment(stream, fileName, resolvedMimeType, isInline, contentId);
     }
@@ -138,6 +139,7 @@ public class EmailAttachment : IDisposable
         string? contentId = null
     )
     {
+        ArgumentNullException.ThrowIfNull(bytes);
         var stream = new MemoryStream(bytes);
         return FromStream(stream, fileName, mimeType, isInline, contentId);
     }
