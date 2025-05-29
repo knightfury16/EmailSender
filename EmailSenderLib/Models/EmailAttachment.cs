@@ -213,13 +213,36 @@ public class EmailAttachment : IDisposable
         };
     }
 
-    public void Dispose()
+    private void ThrowIfDisposed()
     {
         if (_disposed)
-            return;
+        {
+            throw new ObjectDisposedException(nameof(EmailAttachment));
+        }
+    }
 
-        Content.Dispose();
-        _disposed = true;
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                Content?.Dispose();
+            }
+
+            Content = null!;
+            _disposed = true;
+        }
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
         GC.SuppressFinalize(this);
+    }
+
+    ~EmailAttachment()
+    {
+        Dispose(false);
     }
 }
