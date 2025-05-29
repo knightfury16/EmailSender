@@ -23,7 +23,7 @@ public class EmailAttachment : IDisposable
     };
 
     public string FileName { get; }
-    public Stream Content { get; }
+    public Stream Content { get; private set; }
     public string MimeType { get; }
 
     public bool IsInline { get; }
