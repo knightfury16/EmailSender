@@ -74,7 +74,46 @@ public class EmailAttachment : IDisposable
         }
     }
 
-    //Factory Method
+    private static void ValidateFileName(string fileName)
+    {
+        if (string.IsNullOrWhiteSpace(fileName))
+        {
+            throw new ArgumentException("File name cannot be null or empty.", nameof(fileName));
+        }
+
+        var extension = Path.GetExtension(fileName);
+        if (string.IsNullOrEmpty(extension))
+        {
+            throw new ArgumentException("File must have an extension.", nameof(fileName));
+        }
+
+        if (DangerousExtensions.Contains(extension))
+        {
+            throw new ArgumentException(
+                $"File type {extension} is not allowed for security reasons.",
+                nameof(fileName)
+            );
+        }
+
+        if (!AllowedExtensions.Contains(extension))
+        {
+            throw new ArgumentException(
+                $"File type {extension} is not supported. Allowed types: {string.Join(", ", AllowedExtensions)}",
+                nameof(fileName)
+            );
+        }
+    }
+
+    private static void ValidateFileSize(Stream content)
+    {
+        if (content.Length > MaxAttachmentSize)
+        {
+            throw new InvalidOperationException(
+                $"Attachment size ({content.Length} bytes) exceeds the maximum allowed size of {MaxAttachmentSize} bytes."
+            );
+        }
+    }
+
     public static EmailAttachment FromStream(
         Stream stream,
         string fileName,
