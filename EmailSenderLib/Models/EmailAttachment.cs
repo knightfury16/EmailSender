@@ -16,6 +16,12 @@ public class EmailAttachment : IDisposable
         ".ods", ".odp", ".ppt", ".pptx"
     };
 
+    private static readonly HashSet<string> DangerousExtensions = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ".exe", ".dll", ".bat", ".cmd", ".ps1", ".vbs", ".js", ".jar",
+        ".msi", ".reg", ".scr", ".pif", ".com", ".sys", ".drv"
+    };
+
     public string FileName { get; }
     public Stream Content { get; }
     public string MimeType { get; }
