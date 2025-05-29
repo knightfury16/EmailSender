@@ -35,7 +35,7 @@ public abstract class SendRequest : IDisposable
         {
             if (string.IsNullOrWhiteSpace(value))
             {
-                throw new ArgumentException("Subject can not be null or empty.", nameof(value));
+                throw new ArgumentException("Subject cannot be null or empty.", nameof(value));
             }
 
             if (_subject.Length > MaxSubjectLength)
