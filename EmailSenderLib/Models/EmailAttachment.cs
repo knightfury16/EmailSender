@@ -8,7 +8,7 @@ namespace EmailSenderLib.Models;
 public class EmailAttachment : IDisposable
 {
     private bool _disposed;
-    private int MaxAttachmentSize = 25 * 1024 * 1024; // 25MiB
+    private const int MaxAttachmentSize = 25 * 1024 * 1024; // 25MiB
 
     public string FileName { get; }
     public Stream Content { get; }
