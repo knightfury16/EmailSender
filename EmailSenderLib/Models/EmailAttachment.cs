@@ -200,8 +200,7 @@ public class EmailAttachment : IDisposable
         return ext switch
         {
             ".txt" => "text/plain",
-            ".html" => "text/html",
-            ".htm" => "text/html",
+            ".html" or ".htm" => "text/html",
             ".jpg" or ".jpeg" => "image/jpeg",
             ".png" => "image/png",
             ".gif" => "image/gif",
