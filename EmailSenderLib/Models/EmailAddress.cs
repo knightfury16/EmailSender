@@ -72,20 +72,20 @@ public class EmailAddress : IEquatable<EmailAddress>
     {
         if (address == null)
         {
-            throw new ArgumentNullException(nameof(address), "Email Address can not be null.");
+            throw new ArgumentNullException(nameof(address), "Email address cannot be null.");
         }
 
         address = address.Trim();
 
         if (string.IsNullOrEmpty(address))
         {
-            throw new ArgumentException("Email Address can not be empty");
+            throw new ArgumentException("Email address cannot be empty.", nameof(address));
         }
 
         if (address.Length > MaxEmailLength)
         {
             throw new ArgumentException(
-                $"Email address can not exceed {MaxEmailLength} characters.",
+                $"Email address cannot exceed {MaxEmailLength} characters.",
                 nameof(address)
             );
         }
@@ -116,14 +116,14 @@ public class EmailAddress : IEquatable<EmailAddress>
         if (displayName.Length > MaxDisplayNameLength)
         {
             throw new ArgumentException(
-                $"Display name can not excced {MaxDisplayNameLength} characters.",
+                $"Display name cannot exceed {MaxDisplayNameLength} characters.",
                 nameof(displayName)
             );
         }
 
         if (displayName.Any(char.IsControl))
         {
-            throw new ArgumentException("Display name can not contain control characters.");
+            throw new ArgumentException("Display name cannot contain control characters.");
         }
     }
 
