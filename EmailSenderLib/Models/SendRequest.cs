@@ -85,7 +85,7 @@ public abstract class SendRequest : IDisposable
             if (recipient == null)
                 continue;
 
-            if (collection.Count > MaxRecipientPerType)
+            if (collection.Count >= MaxRecipientPerType)
             {
                 throw new InvalidOperationException(
                     $"Cannot add more than {MaxRecipientPerType} {type} recipients."
