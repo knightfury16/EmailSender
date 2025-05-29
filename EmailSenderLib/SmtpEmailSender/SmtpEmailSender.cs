@@ -36,38 +36,46 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            _logger?.LogDebug($"Preparing to send email with subject {request.Subject}");
+            _logger?.LogDebug("Preparing to send email with subject {Subject} and messageId {MessageId}", 
+                request.Subject, request.MessageId);
 
             using var message = CreateMailMessage(request);
             using var smtpClient = CreateSmtpClient();
 
             _logger?.LogInformation(
-                "Sending Emails to {Recipients} with subject: {Subject}",
+                "Sending email to {Recipients} with subject: {Subject} and messageId: {MessageId}",
                 string.Join(",", request.To.Select(t => t.Address)),
-                message.Subject
+                message.Subject,
+                request.MessageId
             );
 
             await smtpClient.SendMailAsync(message, cancellationToken);
 
             var messageId = message.Headers[SendRequest.MessageIdKey];
 
-            _logger?.LogInformation($"Email sent successfully with messageId {messageId}");
+            _logger?.LogInformation("Email sent successfully with messageId {MessageId}", messageId);
 
             return EmailSendResponse.Success();
         }
         catch (OperationCanceledException)
         {
-            _logger.LogWarning(
-                $"Email sending with subject {request.Subject} messageId {request.MessageId} was cancelled."
+            _logger?.LogWarning(
+                "Email sending was cancelled. Subject: {Subject}, MessageId: {MessageId}",
+                request.Subject,
+                request.MessageId
             );
             throw;
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             _logger?.LogError(
-                $"Failed email sending with {request.Subject} and messageId {request.MessageId}. Error: {ex.Message}"
+                ex,
+                "Failed to send email. Subject: {Subject}, MessageId: {MessageId}, Error: {ErrorMessage}",
+                request.Subject,
+                request.MessageId,
+                ex.Message
             );
-            return EmailSendResponse.Failure(ex.Message);
+            return EmailSendResponse.Failure($"Failed to send email: {ex.Message}");
         }
     }
 
