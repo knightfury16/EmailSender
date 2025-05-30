@@ -85,8 +85,6 @@ public class EmailAttachment : IDisposable
             throw new ArgumentException("File name cannot be null or empty.", nameof(fileName));
         }
 
-        //WARN: Will I always have file? what about creating attachment from stream or bytes?
-        //investigate
         var extension = Path.GetExtension(fileName);
         if (string.IsNullOrEmpty(extension))
         {
