@@ -96,8 +96,8 @@ public sealed class SmtpEmailSender : IEmailSender, IDisposable
         try
         {
             var renderedTemplate = await _templateRenderer.RenderTemplateAsync(
+                request.TemplateContent,
                 request.TemplateId,
-                request.TemplateContent ?? string.Empty,
                 cancellationToken
             );
 
