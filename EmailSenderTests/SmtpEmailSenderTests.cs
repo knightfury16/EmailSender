@@ -1,31 +1,12 @@
-using EmailSenderLib.Models;
-using EmailSenderLib.SmtpEmailSender;
-using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Options;
-
 namespace EmailSenderTests;
 
 public class SmtpEmailSenderTests
 {
-    //TODO: write mroe comprehensive tests
-    // [Fact]
-    // public async Task MissingSmtpServer_ReturnsFailure()
-    // {
-    //     var settings = new SmtpEmailSettings
-    //     {
-    //         UserName = "user",
-    //         Password = "pass",
-    //         SenderEmail = "sender@example.com",
-    //     };
-    //     var options = Options.Create(settings);
-    //     var sender = new SmtpEmailSender(options, NullLogger<SmtpEmailSettings>.Instance);
-    //     var request = new EmailRequest(new EmailAddress("to@example.com"))
-    //     {
-    //         Subject = "Sub",
-    //         TextContent = "body",
-    //     };
-    //
-    //     var response = await sender.SendEmailAsync(request);
-    //     Assert.True(response.IsFailure);
-    // }
+    //So this class is not testable because SmtpClient is a concreate
+    //class. It does not implement an interface as such I can not Moq
+    //SmtpClient. For that I would need a concreate SMTP class.
+    //Another way of testing this class would be Wrapping SmtpClient with
+    //my own interface. That would require the entire code design to change.
+    //if testing is a priority then during the design face we need to take this
+    //fact into consideration
 }
