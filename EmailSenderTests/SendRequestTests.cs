@@ -19,7 +19,7 @@ public class SendRequestTests
     public void AddTo_ExceedLimit_Throws()
     {
         var request = new EmailRequest(new List<EmailAddress>());
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 500; i++)
         {
             request.AddTo(CreateAddress(i));
         }
