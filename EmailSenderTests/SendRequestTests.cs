@@ -9,7 +9,7 @@ public class SendRequestTests
     [Fact]
     public void AddRecipients_DuplicatesIgnored()
     {
-        var request = new EmailSendRequest(new List<EmailAddress>());
+        var request = new EmailRequest(new List<EmailAddress>());
         request.AddTo(CreateAddress(1));
         request.AddTo(CreateAddress(1));
         Assert.Single(request.To);
@@ -18,7 +18,7 @@ public class SendRequestTests
     [Fact]
     public void AddTo_ExceedLimit_Throws()
     {
-        var request = new EmailSendRequest(new List<EmailAddress>());
+        var request = new EmailRequest(new List<EmailAddress>());
         for (int i = 0; i < 100; i++)
         {
             request.AddTo(CreateAddress(i));
@@ -30,7 +30,7 @@ public class SendRequestTests
     public void Validate_DuplicateAcrossCollections_Throws()
     {
         var addr = CreateAddress(1);
-        var request = new EmailSendRequest(new List<EmailAddress> { addr });
+        var request = new EmailRequest(new List<EmailAddress> { addr });
         request.AddCc(addr);
         request.Subject = "Test";
         request.TextContent = "text";
@@ -40,7 +40,7 @@ public class SendRequestTests
     [Fact]
     public void Validate_NoRecipients_Throws()
     {
-        var request = new EmailSendRequest(new List<EmailAddress>());
+        var request = new EmailRequest(new List<EmailAddress>());
         request.Subject = "Test";
         request.TextContent = "text";
         Assert.Throws<InvalidOperationException>(() => request.Validate());
@@ -49,7 +49,7 @@ public class SendRequestTests
     [Fact]
     public void AddHeader_TrimsValues()
     {
-        var request = new EmailSendRequest(new List<EmailAddress> { CreateAddress(1) });
+        var request = new EmailRequest(new List<EmailAddress> { CreateAddress(1) });
         request.Subject = "Test";
         request.TextContent = "content";
         request.AddHeader(" X ", " val ");

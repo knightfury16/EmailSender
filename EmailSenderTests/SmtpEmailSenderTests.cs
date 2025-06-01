@@ -14,14 +14,14 @@ public class SmtpEmailSenderTests
         {
             UserName = "user",
             Password = "pass",
-            SenderEmail = "sender@example.com"
+            SenderEmail = "sender@example.com",
         };
         var options = Options.Create(settings);
         var sender = new SmtpEmailSender(options, NullLogger<SmtpEmailSettings>.Instance);
-        var request = new EmailSendRequest(new EmailAddress("to@example.com"))
+        var request = new EmailRequest(new EmailAddress("to@example.com"))
         {
             Subject = "Sub",
-            TextContent = "body"
+            TextContent = "body",
         };
 
         var response = await sender.SendEmailAsync(request);
