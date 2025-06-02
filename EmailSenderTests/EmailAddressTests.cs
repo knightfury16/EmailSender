@@ -16,6 +16,18 @@ public class EmailAddressTests
     }
 
     [Fact]
+    public void MaxDisplayNameLengthTest_throwsArgumentException()
+    {
+        Assert.Throws<ArgumentException>(
+            () =>
+                new EmailAddress(
+                    "user@example.com",
+                    "JohdfjakdddhhdksjfhfhhhfhfhfhfjdafnnathanAlexanderMaximillianTheThirdOfTheGreatNorthernEmpire"
+                )
+        );
+    }
+
+    [Fact]
     public void TryCreate_InvalidAddress_ReturnsFalse()
     {
         var result = EmailAddress.TryCreate("invalid@", out var email);
