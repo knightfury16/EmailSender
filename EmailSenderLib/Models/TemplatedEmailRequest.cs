@@ -6,6 +6,7 @@ namespace EmailSenderLib.Models;
 public sealed class TemplatedEmailRequest : SendRequest
 {
     private string? _templateId;
+    private object _templateContent = default!;
 
     /// <summary>
     /// Gets or sets the unique identifier of the template to be used.
@@ -19,7 +20,11 @@ public sealed class TemplatedEmailRequest : SendRequest
     /// <summary>
     /// Gets or sets the content to be used for template variable substitution.
     /// </summary>
-    public required object TemplateContent { get; set; }
+    public required object TemplateContent
+    {
+        get => _templateContent;
+        set => _templateContent = value ?? throw new ArgumentNullException(nameof(TemplateContent));
+    }
 
     public bool HasTemplateContent => TemplateContent != null;
 
