@@ -52,4 +52,23 @@ public class EmailAddressTests
     {
         Assert.Throws<ArgumentException>(() => new EmailAddress(invalidEmail));
     }
+
+    [Theory]
+    [InlineData("John\u0001Doe")] // Start of Heading (ASCII 1)
+    [InlineData("Jane\u0009Doe")] // Horizontal tab (ASCII 9)
+    [InlineData("\u001FMaxwell")] // Unit Separator (ASCII 31)
+    [InlineData("Anna\nSmith")] // Line Feed (ASCII 10)
+    [InlineData("Bob\rJones")] // Carriage Return (ASCII 13)
+    public void DisplayName_WithControlCharacters_ThrowsArgumentException(string invalidDisplayName)
+    {
+        // Arrange
+        var email = "user@example.com";
+
+        // Act & Assert
+        var ex = Assert.Throws<ArgumentException>(
+            () => new EmailAddress(email, invalidDisplayName)
+        );
+
+        Assert.Equal("Display name cannot contain control characters.", ex.Message);
+    }
 }
