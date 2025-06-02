@@ -41,4 +41,15 @@ public class EmailAddressTests
         var email = new EmailAddress("user@example.com", "User");
         Assert.Equal("User <user@example.com>", email.ToString());
     }
+
+    [Theory]
+    [InlineData("plainaddress")]
+    [InlineData("@no-local-part.com")]
+    [InlineData("username@")]
+    [InlineData("username@.com.")]
+    [InlineData("user name@example.com")]
+    public void InvalidEmail_Throws(string invalidEmail)
+    {
+        Assert.Throws<ArgumentException>(() => new EmailAddress(invalidEmail));
+    }
 }
