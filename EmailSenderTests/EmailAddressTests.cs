@@ -71,4 +71,12 @@ public class EmailAddressTests
 
         Assert.Equal("Display name cannot contain control characters.", ex.Message);
     }
+
+    [Fact]
+    public void EmailAddressNormalizedTest()
+    {
+        var user = "TESt@Gmail.Com";
+        var email = new EmailAddress(user, "User");
+        Assert.Equal(email.Address, user.ToLowerInvariant());
+    }
 }
