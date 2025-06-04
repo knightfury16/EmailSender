@@ -8,6 +8,7 @@ namespace EmailSenderLib.Models;
 public class EmailAttachment : IDisposable
 {
     private bool _disposed;
+    private Stream _content = default!;
     private const int MaxAttachmentSize = 25 * 1024 * 1024; // 25MiB
     private static readonly HashSet<string> AllowedExtensions = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -23,7 +24,19 @@ public class EmailAttachment : IDisposable
     };
 
     public string FileName { get; }
-    public Stream Content { get; private set; }
+    public Stream Content
+    {
+        get
+        {
+            ThrowIfDisposed();
+            _content.Seek(0, SeekOrigin.Begin);
+            return _content;
+        }
+        private set
+        {
+            _content = value;
+        }
+    }
     public string MimeType { get; }
 
     public bool IsInline { get; }
