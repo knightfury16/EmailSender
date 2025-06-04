@@ -4,6 +4,13 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>Knight.EmailSender</PackageId>
+    <Version>0.9.0</Version>
+    <Authors>knightfury16</Authors>
+    <Description>A email sender client abstraction for .net</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/knightfury16/EmailSender</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
