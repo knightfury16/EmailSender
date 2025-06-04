@@ -20,6 +20,28 @@ public class EmailAttachmentTests
         Assert.Equal(data, contentBytes);
     }
 
+    //from file create attachment
+    //
+    [Fact]
+    public void FromFile_CreatesAttachment()
+    {
+        var filePath = "./Fixtures/AttachmentTestFile.txt";
+        var expectedBytes = File.ReadAllBytes(filePath);
+
+
+        var attachment = EmailAttachment.FromFile(filePath);
+        Assert.Equal("AttachmentTestFile.txt", attachment.FileName);
+        Assert.Equal("text/plain", attachment.MimeType);
+        Assert.False(attachment.IsInline);
+
+        //check content
+        using var memoryStream = new MemoryStream();
+        attachment.Content.CopyTo(memoryStream);
+        var contentBytes = memoryStream.ToArray();
+        Assert.Equal(expectedBytes, contentBytes);
+
+    }
+
     [Fact]
     public void InlineAttachmentWithoutContentId_Throws()
     {
