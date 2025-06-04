@@ -12,6 +12,12 @@ public class EmailAttachmentTests
         Assert.Equal("test.txt", attachment.FileName);
         Assert.Equal("text/plain", attachment.MimeType);
         Assert.False(attachment.IsInline);
+
+        //check content
+        using var memoryStream = new MemoryStream();
+        attachment.Content.CopyTo(memoryStream);
+        var contentBytes = memoryStream.ToArray();
+        Assert.Equal(data, contentBytes);
     }
 
     [Fact]
