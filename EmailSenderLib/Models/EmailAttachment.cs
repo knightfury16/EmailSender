@@ -39,8 +39,8 @@ public class EmailAttachment : IDisposable
     }
     public string MimeType { get; }
 
-    public bool IsInline { get; }
-    public string? ContentId { get; }
+    public bool IsInline { get; set; }
+    public string? ContentId { get; set; }
 
     private EmailAttachment(
         Stream content,
